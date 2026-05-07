@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>機器視覺檢測專案 | 知識整合網頁</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        header p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            color: #bdc3c7;
+        }
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: #fff;
+            padding: 2rem 3rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2980b9;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+        }
+        h3 {
+            color: #2c3e50;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .highlight {
+            background-color: #e8f4f8;
+            padding: 1rem;
+            border-left: 4px solid #3498db;
+            margin: 1.5rem 0;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>基於型態學特徵描述與 YOLO 深度學習之<br>PCB 裸板瑕疵即時偵測系統 [cite: 1, 3]</h1>
+    <p>國立臺北大學 電機工程學系 | 開發者：張權耀、劉東峻 [cite: 4]</p>
+</header>
+
+<div class="container">
+    <div class="highlight">
+        <h3>專案摘要</h3>
+        <p>本系統目標物件為 PCB 裸板二值化影像 [cite: 5]。在進入 AI 訓練前，我們從「數學形態學」的角度來精確定義工業界常見的六大類致命瑕疵，將其視為特定的形狀特徵異常 [cite: 5]。</p>
+    </div>
+
+    <h2>一、 工業界常見六大瑕疵與形態學定義</h2>
+    <ul>
+        <li><strong>Pin-hole (針孔)</strong>：表現為前景像素(線路)邊界所圍繞出的背景空洞區域 [cite: 6]。在形態學上對應「區域填補(Hole Filling)」欲尋找的特徵 [cite: 6]。</li>
+        <li><strong>Copper (殘銅)</strong>：在不該有銅的基板區域殘留的孤立銅塊 [cite: 7]。在形態學上屬於可透過「連通區域擷取(Connected Components Extraction)」獨立出來的異常區塊 [cite: 7]。</li>
+        <li><strong>Mousebite (鼠咬) & Spur (毛刺)</strong>：線路邊緣的不規則缺損或多出的凸起銅渣 [cite: 8]。此類瑕疵屬於邊緣特徵異常，其概念等同於對線路進行「輪廓萃取(Boundary Extraction)」後所發現的形狀變異 [cite: 8]。</li>
+        <li><strong>Open (斷路) & Short (短路)</strong>：線路中斷或發生異常沾黏 [cite: 9]。這類瑕疵破壞了整體的拓撲結構，從形態學「骨幹萃取(Skeletonization)」的角度來看，即代表核心骨幹路徑發生了斷裂或異常分支 [cite: 9]。</li>
+    </ul>
+
+    <h2>二、 系統開發流程 [cite: 10]</h2>
+    <p>本系統的開發流程結合了客製化資料工程與先進的深度學習架構，分為三個主要階段 [cite: 11]：</p>
+
+    <h3>第一階段：影像前處理與資料集建置 (Data Preparation) [cite: 12]</h3>
+    <ul>
+        <li><strong>特徵強化與多源整合</strong>：匯入多個批次的 PCB 瑕疵影像，這些影像的瑕疵特徵皆對應了形態學的基礎運算特性 [cite: 13]。</li>
+        <li><strong>座標系統轉換工程</strong>：開發 Python 腳本，將原始開源資料集的絕對像素座標，自動且精確地轉換為 YOLO 模型所需的中心點相對比例格式 (Class, X_center, Y_center, Width, Height) [cite: 14]。</li>
+        <li><strong>資料分割</strong>：透過自動化程式，將資料集依據 8:2 的黃金比例，隨機切分為訓練集與驗證集 [cite: 15]。</li>
+    </ul>
+
+    <h3>第二階段：模型訓練與優化 (Model Training) [cite: 16]</h3>
+    <ul>
+        <li><strong>環境與架構配置</strong>：配置 GPU (CUDA) 加速運算環境，並設定 data.yaml 導航檔 [cite: 17]。</li>
+        <li><strong>輕量化遷移學習</strong>：為解決傳統模板匹配 (Template Matching) 極度依賴完美對齊且易受雜訊干擾的痛點，本專案導入 YOLOv8n (Nano) 基礎模型進行遷移學習 [cite: 18]。模型透過數十個 Epochs 學習瑕疵特徵與紋理，大幅提升系統的強健性 (Robustness) [cite: 18]。</li>
+    </ul>
+
+    <h3>第三階段：即時推論與部署 (Real-time Inference) [cite: 19]</h3>
+    <ul>
+        <li><strong>極速推論</strong>：載入訓練獲得的最佳權重檔 (best.pt) [cite: 20]。受惠於 YOLO 架構與 GPU 協同運算，單張圖片推論僅需數毫秒 (ms) [cite: 20]。</li>
+        <li><strong>多元落地應用</strong>：結合 OpenCV 處理影像輸入，實現單張靜態圖片的瑕疵 Bounding Box 標示 [cite: 21, 22]。此外，成功將 AI 模型與 iVcam 虛擬攝影機技術結合，實現使用智慧型手機鏡頭的「移動式/遠端即時檢測站」 [cite: 22]。</li>
+    </ul>
+    
+    </div>
+
+<footer>
+    <p>© 2026 張權耀的知識整合網頁. 國立臺北大學電機工程學系專案紀錄.</p>
+</footer>
+
+</body>
+</html>
