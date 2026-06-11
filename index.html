@@ -19,6 +19,7 @@
             margin: 0;
             padding: 0;
             line-height: 1.6;
+            scroll-behavior: smooth; /* 讓捷徑點擊後有平滑滾動效果 */
         }
         header {
             background-color: var(--primary-color);
@@ -36,6 +37,32 @@
             color: #bdc3c7;
             margin-top: 10px;
         }
+        
+        /* --- 新增：上方導覽捷徑列 --- */
+        .shortcuts {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .shortcuts a {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .shortcuts a:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
         .container {
             max-width: 1100px;
             margin: 0 auto;
@@ -47,7 +74,9 @@
             padding-bottom: 0.5rem;
             display: inline-block;
             margin-bottom: 1.5rem;
+            padding-top: 2rem; /* 增加上方空間，避免捷徑跳轉時被擋住 */
         }
+        
         /* 專題區塊設計 */
         .project-section {
             margin-bottom: 4rem;
@@ -69,6 +98,7 @@
             margin-bottom: 2rem;
             color: #ecf0f1;
         }
+        
         /* 網格卡片設計 (課程單元) */
         .grid {
             display: grid;
@@ -93,22 +123,37 @@
             margin-top: 0;
             color: var(--primary-color);
             font-size: 1.2rem;
+            margin-bottom: 0.5rem;
         }
         .card-tags {
             font-size: 0.85rem;
             color: #7f8c8d;
             margin-bottom: 1.5rem;
-            flex-grow: 1;
+            flex-grow: 1; /* 讓標籤區塊填滿剩餘空間，將按鈕往下推 */
         }
-        /* 按鈕設計 */
+        
+        /* --- 新增：多按鈕網格排版 --- */
+        .btn-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 預設為兩欄排列 */
+            gap: 10px;
+            margin-top: auto;
+        }
+        /* 如果只有一個按鈕，讓它填滿整行 */
+        .btn-group .btn:only-child {
+            grid-column: 1 / -1;
+        }
+
         .btn {
             display: inline-block;
             background-color: var(--secondary-color);
             color: white;
-            padding: 0.8rem 1.5rem;
+            padding: 0.7rem 1rem;
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
+            font-size: 0.95rem;
+            text-align: center;
             transition: background-color 0.3s;
         }
         .btn:hover {
@@ -118,12 +163,12 @@
             background-color: transparent;
             color: var(--secondary-color);
             border: 2px solid var(--secondary-color);
-            text-align: center;
         }
         .btn-outline:hover {
             background-color: var(--secondary-color);
             color: white;
         }
+        
         footer {
             text-align: center;
             padding: 2rem;
@@ -138,111 +183,158 @@
 <header>
     <h1>機器視覺檢測</h1>
     <p>國立臺北大學電機工程學系 | 學習知識整合平台</p>
+    
+    <nav class="shortcuts">
+        <a href="#project-sec">🏆 專題實作</a>
+        <a href="#hardware-sec">📷 硬體與取像</a>
+        <a href="#image-sec">🖼️ 影像處理</a>
+        <a href="#ai-sec">🧠 AI 與分類技術</a>
+    </nav>
 </header>
 
 <main class="container">
-    <section class="project-section">
+    <section id="project-sec" class="project-section">
         <h2>🏆 專題實作</h2>
         <div class="project-card">
             <h3>期中/期末專案：PCB 裸板瑕疵即時偵測系統</h3>
             <p>基於型態學特徵描述與 YOLO 深度學習之應用</p>
-            <a href="midterm.html" class="btn">進入專案網頁</a>
+            <a href="midterm.html" class="btn" style="padding: 1rem 2.5rem; font-size: 1.1rem;">進入專案網頁</a>
         </div>
     </section>
 
-    <section class="course-section">
-        <h2>📚 課程單元知識庫</h2>
+    <section id="hardware-sec" class="course-section">
+        <h2>📷 硬體與取像參數庫</h2>
         <div class="grid">
             
             <div class="card">
                 <h3>光源與照明的設計</h3>
                 <div class="card-tags">基礎概念 • 光源配置</div>
-                <a href="pdf/光源與照明的設計.pdf" class="btn btn-outline">內容建置中...</a>
+                <div class="btn-group">
+                    <a href="pdf/光源與照明的設計.pdf" target="_blank" class="btn btn-outline">內容建置中...</a>
+                </div>
             </div>
 
             <div class="card">
                 <h3>相機與鏡頭的搭配與選用</h3>
-                <div class="card-tags">包含單元 1, 2, 3, 4/div>
-                <a href="pdf/相機規格及選用.pdf" target="_blank" class="btn">查看單元 1</a>
-                <a href="pdf/鏡頭規格及選用.pdf" target="_blank" class="btn" style="margin-top: 5px;">查看單元 2</a>
-                <a href="pdf/相機與鏡頭的搭配.pdf" target="_blank" class="btn" style="margin-top: 5px;">查看單元 3</a>
-                <a href="pdf/取像參數的選用.pdf" target="_blank" class="btn" style="margin-top: 5px;">查看單元 4</a>
+                <div class="card-tags">包含單元 1, 2, 3, 4</div>
+                <div class="btn-group">
+                    <a href="pdf/相機規格及選用.pdf" target="_blank" class="btn">查看單元 1</a>
+                    <a href="pdf/鏡頭規格及選用.pdf" target="_blank" class="btn">查看單元 2</a>
+                    <a href="pdf/相機與鏡頭的搭配.pdf" target="_blank" class="btn">查看單元 3</a>
+                    <a href="pdf/取像參數的選用.pdf" target="_blank" class="btn">查看單元 4</a>
+                </div>
             </div>
 
             <div class="card">
                 <h3>遠心鏡頭及線掃描相機</h3>
                 <div class="card-tags">進階硬體應用</div>
-                <a href="pdf/遠心鏡頭及線掃描相機.pdf" class="btn btn-outline">內容建置中...</a>
+                <div class="btn-group">
+                    <a href="pdf/遠心鏡頭及線掃描相機.pdf" target="_blank" class="btn btn-outline">內容建置中...</a>
+                </div>
             </div>
+
+        </div>
+    </section>
+
+    <section id="image-sec" class="course-section">
+        <h2>🖼️ 影像處理知識庫</h2>
+        <div class="grid">
 
             <div class="card">
                 <h3>彩色成像品質的優化</h3>
                 <div class="card-tags">色彩空間 • 影像還原</div>
-                <a href="pdf/彩色成像品質的優化.pdf" class="btn btn-outline">內容建置中...</a>
+                <div class="btn-group">
+                    <a href="pdf/彩色成像品質的優化.pdf" target="_blank" class="btn btn-outline">內容建置中...</a>
+                </div>
             </div>
 
             <div class="card">
                 <h3>影像空間濾波</h3>
                 <div class="card-tags">平滑化 • 銳化 • 雜訊去除</div>
-                <a href="pdf/影像處理_影像空間濾波.pdf" class="btn btn-outline">內容建置中...</a>
+                <div class="btn-group">
+                    <a href="pdf/影像處理_影像空間濾波.pdf" target="_blank" class="btn btn-outline">內容建置中...</a>
+                </div>
             </div>
 
             <div class="card">
                 <h3>影像分割 (Segmentation)</h3>
                 <div class="card-tags">包含單元 1, 2, 3</div>
-                <a href="pdf/影像處理_影像分割1.pdf" target="_blank" class="btn">查看單元 1</a>
-                <a href="pdf/影像處理_影像分割2.pdf" target="_blank" class="btn" style="margin-top: 5px;">查看單元 2</a>
-                <a href="pdf/影像處理_影像分割3.pdf" target="_blank" class="btn" style="margin-top: 5px;">查看單元 3</a>
+                <div class="btn-group">
+                    <a href="pdf/影像處理_影像分割1.pdf" target="_blank" class="btn">查看單元 1</a>
+                    <a href="pdf/影像處理_影像分割2.pdf" target="_blank" class="btn">查看單元 2</a>
+                    <a href="pdf/影像處理_影像分割3.pdf" target="_blank" class="btn">查看單元 3</a>
+                </div>
             </div>
 
             <div class="card">
                 <h3>形態學 (Morphology)</h3>
                 <div class="card-tags">包含單元 1, 2</div>
-                <a href="pdf/影像處理_形態學1.pdf" target="_blank" class="btn">查看單元 1</a>
-                <a href="pdf/影像處理_形態學2.pdf" target="_blank" class="btn" style="margin-top: 5px;">查看單元 2</a>
+                <div class="btn-group">
+                    <a href="pdf/影像處理_形態學1.pdf" target="_blank" class="btn">查看單元 1</a>
+                    <a href="pdf/影像處理_形態學2.pdf" target="_blank" class="btn">查看單元 2</a>
+                </div>
             </div>
 
             <div class="card">
                 <h3>影像特徵表示與描述</h3>
                 <div class="card-tags">包含單元 1, 2, 3</div>
-                <a href="pdf/影像處理_影像特徵表示與描述1.pdf" target="_blank" class="btn">查看單元 1</a>
-                <a href="pdf/影像處理_影像特徵表示與描述2.pdf" target="_blank" class="btn" style="margin-top: 5px;">查看單元 2</a>
-                <a href="pdf/影像處理_影像特徵表示與描述3.pdf" target="_blank" class="btn" style="margin-top: 5px;">查看單元 3</a>
+                <div class="btn-group">
+                    <a href="pdf/影像處理_影像特徵表示與描述1.pdf" target="_blank" class="btn">查看單元 1</a>
+                    <a href="pdf/影像處理_影像特徵表示與描述2.pdf" target="_blank" class="btn">查看單元 2</a>
+                    <a href="pdf/影像處理_影像特徵表示與描述3.pdf" target="_blank" class="btn">查看單元 3</a>
+                </div>
             </div>
+
+        </div>
+    </section>
+
+    <section id="ai-sec" class="course-section">
+        <h2>🧠 AI 與分類技術庫</h2>
+        <div class="grid">
 
             <div class="card">
                 <h3>影像與模板匹配技術</h3>
                 <div class="card-tags">包含單元 1, 2</div>
-                <a href="pdf/影像處理_影像匹配介紹.pdf" target="_blank" class="btn">查看單元 1</a>
-                <a href="pdf/影像處理_模板匹配.pdf" target="_blank" class="btn" style="margin-top: 5px;">查看單元 2</a>
+                <div class="btn-group">
+                    <a href="pdf/影像處理_影像匹配介紹.pdf" target="_blank" class="btn">查看單元 1</a>
+                    <a href="pdf/影像處理_模板匹配.pdf" target="_blank" class="btn">查看單元 2</a>
+                </div>
             </div>
 
             <div class="card">
                 <h3>特徵匹配進階</h3>
                 <div class="card-tags">點特徵匹配 1, 2 • 關聯特徵匹配</div>
-                <a href="pdf/影像匹配_點特徵匹配(1).pdf" target="_blank" class="btn">查看單元 1</a>
-                <a href="pdf/影像匹配_點特徵匹配(2).pdf" target="_blank" class="btn" style="margin-top: 5px;">查看單元 2</a>
-                <a href="pdf/影像處理_關聯特徵匹配.pdf" target="_blank" class="btn" style="margin-top: 5px;">查看單元 3</a>
+                <div class="btn-group">
+                    <a href="pdf/影像匹配_點特徵匹配(1).pdf" target="_blank" class="btn">查看單元 1</a>
+                    <a href="pdf/影像匹配_點特徵匹配(2).pdf" target="_blank" class="btn">查看單元 2</a>
+                    <a href="pdf/影像處理_關聯特徵匹配.pdf" target="_blank" class="btn">查看單元 3</a>
+                </div>
             </div>
 
             <div class="card">
                 <h3>瑕疵檢測實務</h3>
                 <div class="card-tags">檢測基本概念 • 參考比對法</div>
-                <a href="pdf/二維檢測原理與技術_瑕疵檢測-參考比對法.pdf" target="_blank" class="btn">查看單元 1</a>
-                <a href="pdf/二維檢測原理與技術_檢測的基本概念.pdf" target="_blank" class="btn" style="margin-top: 5px;">查看單元 2</a>
+                <div class="btn-group">
+                    <a href="pdf/二維檢測原理與技術_瑕疵檢測-參考比對法.pdf" target="_blank" class="btn">查看單元 1</a>
+                    <a href="pdf/二維檢測原理與技術_檢測的基本概念.pdf" target="_blank" class="btn">查看單元 2</a>
+                </div>
             </div>
 
             <div class="card">
                 <h3>影像特徵分析</h3>
                 <div class="card-tags">影像資料特徵萃取與分析</div>
-                <a href="pdf/二維檢測原理與技術_影像特徵分析.pdf" class="btn btn-outline">內容建置中...</a>
+                <div class="btn-group">
+                    <a href="pdf/二維檢測原理與技術_影像特徵分析.pdf" target="_blank" class="btn btn-outline">內容建置中...</a>
+                </div>
             </div>
 
             <div class="card">
                 <h3>AI 機器學習分類技術</h3>
                 <div class="card-tags">傳統分類技術 • 非線性分類技術</div>
-                <a href="pdf/二維檢測原理與技術_傳統分類技術.pdf" target="_blank" class="btn">查看單元 1</a>
-                <a href="pdf/二維檢測原理與技術_非線性分類技術.pdf" target="_blank" class="btn" style="margin-top: 5px;">查看單元 2</a>
+                <div class="btn-group">
+                    <a href="pdf/二維檢測原理與技術_傳統分類技術.pdf" target="_blank" class="btn">查看單元 1</a>
+                    <a href="pdf/二維檢測原理與技術_非線性分類技術.pdf" target="_blank" class="btn">查看單元 2</a>
+                </div>
             </div>
 
         </div>
