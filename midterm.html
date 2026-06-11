@@ -74,6 +74,39 @@
 
 <div class="container">
     <div class="highlight">
+        <div class="presentation-box">
+    <h2>📊 專案簡報展示</h2>
+    <div class="iframe-container">
+        <iframe src="slides.html" title="Project Presentation"></iframe>
+    </div>
+    <p style="text-align: center; color: #7f8c8d; font-size: 0.9rem; margin-top: 10px;">
+        💡 提示：您可以使用滑鼠滾輪或捲軸查看簡報頁面
+    </p>
+</div>
+
+<style>
+    .presentation-box {
+        margin: 2rem 0;
+        background: #fff;
+    }
+    .iframe-container {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%; /* 16:9 比例 */
+        overflow: hidden;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border: 1px solid #ddd;
+    }
+    .iframe-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+</style>
         <h3>專案摘要</h3>
         <p>本系統目標物件為 PCB 裸板二值化影像 [cite: 5]。在進入 AI 訓練前，我們從「數學形態學」的角度來精確定義工業界常見的六大類致命瑕疵，將其視為特定的形狀特徵異常 [cite: 5]。</p>
     </div>
